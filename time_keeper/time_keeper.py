@@ -187,14 +187,14 @@ class TimeKeeper:
 
     def send_task_to_service(self, name: str, job_id: int, status: str, file_name: str):
         # Variables used
-        url = 'http://localhost:8087/task'
+        url = 'http://localhost:8000/task'
         data = {'name': name, 'job_id': job_id, 'status': status, 'file_name': file_name}
         headers = {'Content-type': 'application/json'}
 
         # Check if task exists
         task_url = f'{url}/{job_id}'
         r = requests.get(task_url)
-        if 'data' in r.json():
+        if r.status_code == 200:
             # If it exists, patch the record
             r = requests.patch(task_url, data=json.dumps(data), headers=headers)
             QgsMessageLog.logMessage('Recorded Updated', 'TimeKeeper')

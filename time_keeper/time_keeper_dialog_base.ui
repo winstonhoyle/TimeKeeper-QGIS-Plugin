@@ -98,6 +98,11 @@
       </item>
       <item>
        <property name="text">
+        <string>Paused</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
         <string>Completed</string>
        </property>
       </item>
