@@ -1,5 +1,5 @@
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from pydantic import BaseModel
 
@@ -14,7 +14,7 @@ class TaskCreate(TaskBase):
     name: str
     job_id: int
     status: Status
-    file_name: str
+    file_name: Optional[str] = None
 
 
 class Task(TaskBase):
@@ -22,9 +22,12 @@ class Task(TaskBase):
     name: str
     job_id: int
     status: Status
-    file_name: str
+    file_name: str = None
     created: datetime
-    modified: datetime
+    last_modified: datetime
+    started: datetime = None
+    completed: datetime = None
+    time_elapsed: timedelta = None
 
     class Config:
         orm_mode = True

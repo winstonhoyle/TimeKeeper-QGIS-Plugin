@@ -1,5 +1,5 @@
 import enum
-from sqlalchemy import Column, Integer, String, Enum, DateTime
+from sqlalchemy import Column, Integer, String, Enum, DateTime, Interval
 from sqlalchemy.sql import func
 
 from .database import Base
@@ -24,9 +24,16 @@ class Task(Base):
     created = Column(
         DateTime(timezone=True), default=func.current_timestamp(), nullable=False,
     )
-    modified = Column(
+
+    last_modified = Column(
         DateTime(timezone=True),
         default=func.current_timestamp(),
         onupdate=func.current_timestamp(),
         nullable=False,
     )
+
+    started = Column(DateTime(timezone=True), nullable=True)
+
+    completed = Column(DateTime(timezone=True), nullable=True)
+
+    time_elapsed = Column(Interval, nullable=True)

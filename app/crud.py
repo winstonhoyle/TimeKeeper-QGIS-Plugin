@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy.orm import Session
 
 from . import models, schemas
@@ -24,6 +26,14 @@ def create_task(db: Session, task: schemas.TaskCreate):
 def update_task(db: Session, task: schemas.Task, updated_data: schemas.TaskCreate):
     for var, value in vars(updated_data).items():
         setattr(task, var, value) if value else None
+
+    if updated_data.status == models.Status.WORKING and not task.started:
+        task.started = task.last_modified
+
+    if updated_data.status == models.Status.COMPLETED:
+        task.completed = task.last_modified
+        if task.started:
+            task.time_elapsed = task.completed - task.started
 
     db.commit()
     db.refresh(task)

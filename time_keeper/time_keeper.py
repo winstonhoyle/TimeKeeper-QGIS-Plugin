@@ -232,7 +232,7 @@ class TimeKeeper:
             # Send a task to service for monitoring, probably will be swapped out with internal API
             self.send_task_to_service(name, job_id, status, file_name=file_name)
             # Removing layer from map and clean the dialog
-            if status == 'Completed':
+            if status == 'Completed' and file_name:
                 self.clear_dialog()
                 instance = QgsProject.instance()
                 layer_name = file_name.split('.')[0]
@@ -240,5 +240,5 @@ class TimeKeeper:
                 instance.removeMapLayer(layer=map_layer)
                 QgsMessageLog.logMessage(f'Recorded Completed', 'TimeKeeper')
             # Add raster layer
-            if status == 'Working':
+            if status == 'Working' and file_name:
                 self.iface.addRasterLayer(file_path, file_name.split('.')[0])
